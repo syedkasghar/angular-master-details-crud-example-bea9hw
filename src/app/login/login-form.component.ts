@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { IncidentService, AlertService } from '../_services';
+import { AuthenticationService, AlertService } from '../_services';
 import { MustMatch } from '../_helpers';
 
 @Component({ templateUrl: 'login-form.component.html' })
@@ -18,7 +18,7 @@ export class LoginFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private incidentService: IncidentService,
+    private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) {}
 
@@ -46,22 +46,21 @@ export class LoginFormComponent implements OnInit {
     }
 
     this.loading = true;
-    this.router.navigate(['../'], { relativeTo: this.route });
-    //this.updateIncident();
+    this.authenticateUser();
+    //this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  /*
-  private updateIncident() {
+  private authenticateUser() {
     console.log(this.form.value);
-    this.incidentService
-      .update(this.id, this.form.value)
+    this.authenticationService
+      .login(this.form.value.username, this.form.value.password)
       .pipe(first())
       .subscribe({
         next: () => {
-          this.alertService.success('Incident updated', {
+          this.alertService.success('Authentication Successful', {
             keepAfterRouteChange: true,
           });
-          this.router.navigate(['../../'], { relativeTo: this.route });
+          this.router.navigate(['home'], { relativeTo: this.route });
         },
         error: (error) => {
           this.alertService.error(error);
@@ -69,5 +68,4 @@ export class LoginFormComponent implements OnInit {
         },
       });
   }
-  */
 }
