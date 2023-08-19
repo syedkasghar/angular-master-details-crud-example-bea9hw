@@ -16,11 +16,11 @@ const incidentsModule = () =>
   import('./incidents/incidents.module').then((x) => x.IncidentsModule);
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent , , canActivate: [AuthGuard] },
   { path: 'login', loadChildren: loginModule },
-  { path: 'devices', loadChildren: devicesModule },
-  { path: 'incidents', loadChildren: incidentsModule },
-  { path: 'users', loadChildren: usersModule },
+  { path: 'devices', loadChildren: devicesModule , canActivate: [AuthGuard] },
+  { path: 'incidents', loadChildren: incidentsModule , canActivate: [AuthGuard] },
+  { path: 'users', loadChildren: usersModule , canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' },
